@@ -1,11 +1,13 @@
 import React from "react";
 import SearchBar from "./SearchBar";
+import VideoList from "./VideoList";
+
 import youtube from "../api/youtube";
 
 const KEY = "AIzaSyB_gW65eypRJYUUwwMa85vwY2dJOPQ84_E";
 
 class App extends React.Component {
-  state = { imgs: [] };
+  state = { videos: [] };
 
   onTermSubmit = async (term) => {
     const res = await youtube.get("/search", {
@@ -17,16 +19,15 @@ class App extends React.Component {
         key: KEY,
       },
     });
-  };
-
-  onSearchSubmit = async (term) => {
-    //console.log(term);
+    console.log(res);
+    this.setState({ videos: res.data.items });
   };
 
   render() {
     return (
       <div className="ui container" style={{ marginTop: "10px" }}>
-        <SearchBar onSubmit={this.onSearchSubmit} />
+        <SearchBar onSubmit={this.onTermSubmit} />
+        <VideoList list={this.state.videos} />
       </div>
     );
   }
