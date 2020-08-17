@@ -10,6 +10,10 @@ const KEY = "AIzaSyB_gW65eypRJYUUwwMa85vwY2dJOPQ84_E";
 class App extends React.Component {
   state = { videos: [], selectedVideo: null };
 
+  componentDidMount() {
+    this.onTermSubmit("");
+  }
+
   onTermSubmit = async (term) => {
     const res = await youtube.get("/search", {
       params: {
@@ -21,7 +25,7 @@ class App extends React.Component {
       },
     });
     console.log(res);
-    this.setState({ videos: res.data.items });
+    this.setState({ videos: res.data.items, selectedVideo: res.data.items[0] });
   };
 
   onVideoSelected = (video) => {
@@ -33,11 +37,19 @@ class App extends React.Component {
     return (
       <div className="ui container" style={{ marginTop: "10px" }}>
         <SearchBar onSubmit={this.onTermSubmit} />
-        <VideoDetail videoDetail={this.state.selectedVideo} />
-        <VideoList
-          list={this.state.videos}
-          onVideoSelected={this.onVideoSelected}
-        />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <VideoDetail videoDetail={this.state.selectedVideo} />
+            </div>
+            <div className="five wide column">
+              <VideoList
+                list={this.state.videos}
+                onVideoSelected={this.onVideoSelected}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

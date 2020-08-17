@@ -10,6 +10,7 @@ const VideoCard = (props) => {
       className="video-item item"
     >
       <img
+        alt={props.video.snippet.title}
         className="ui image"
         src={props.video.snippet.thumbnails.default.url}
       />
